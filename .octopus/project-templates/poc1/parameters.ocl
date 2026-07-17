@@ -1,0 +1,7 @@
+parameter "templaye.workerpool" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = ""
+}
