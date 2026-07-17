@@ -23,3 +23,19 @@ parameter "Environment" {
     help_text = ""
     label = ""
 }
+
+parameter "Target Tag" {
+    display_settings = {
+        Octopus.ControlType = "TargetTags"
+    }
+    help_text = ""
+    label = ""
+}
+
+parameter "Tenant Tag" {
+    display_settings = {
+        Octopus.ControlType = "TenantTags"
+    }
+    help_text = ""
+    label = ""
+}
