@@ -1,0 +1,38 @@
+step "echo-values" {
+    name = "Echo Values"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.AutoRetry.MaximumCount = "3"
+            Octopus.Action.AutoRetry.MinimumBackoff = "5"
+            Octopus.Action.ExecutionTimeout.Minutes = "3"
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                set -e
+                
+                team_name=$(get_octopusvariable "ProjectTemplate.Parameter.TeamName")
+                greeting=$(get_octopusvariable "GreetingMessage")
+                
+                echo "============================================================"
+                echo "  SIMPLE ECHO - PROJECT TEMPLATE DEMO"
+                echo "============================================================"
+                echo ""
+                echo "  Baked-in Project Template Parameter (fixed by template author):"
+                echo "    Team Name: $team_name"
+                echo ""
+                echo "  User Variable (provided at runtime):"
+                echo "    Greeting:  $greeting"
+                echo ""
+                echo "============================================================"
+                echo ""
+                echo "  This demonstrates that project templates can contain both"
+                echo "  fixed values and user-configurable inputs."
+                echo ""
+                echo "============================================================"
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+    }
+}
