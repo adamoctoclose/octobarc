@@ -15,3 +15,11 @@ parameter "Worker Pool" {
     help_text = ""
     label = ""
 }
+
+parameter "Environment" {
+    display_settings = {
+        Octopus.ControlType = "Environments"
+    }
+    help_text = ""
+    label = ""
+}
