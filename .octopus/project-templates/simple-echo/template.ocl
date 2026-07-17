@@ -1,0 +1,7 @@
+name = "Simple Echo"
+description = "A minimal project template that demonstrates project template parameters and user-configurable variables. Echoes both values during deployment."
+
+icon {
+    color = "#757575"
+    id = "layer-group"
+}
