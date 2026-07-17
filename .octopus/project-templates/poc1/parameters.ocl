@@ -5,3 +5,37 @@ parameter "templaye.workerpool" {
     help_text = ""
     label = ""
 }
+
+parameter "checkbox" {
+    display_settings = {
+        Octopus.ControlType = "Checkbox"
+    }
+    help_text = ""
+    label = ""
+
+    value "true" {}
+}
+
+parameter "dropdown" {
+    display_settings = {
+        Octopus.ControlType = "Select"
+        Octopus.SelectOptions = <<-EOT
+            a|option a
+            b|option b
+            EOT
+    }
+    help_text = ""
+    label = ""
+
+    value "b" {}
+}
+
+parameter "singlelinetextbox" {
+    display_settings = {
+        Octopus.ControlType = "SingleLineText"
+    }
+    help_text = ""
+    label = ""
+
+    value "defaultvalue" {}
+}
