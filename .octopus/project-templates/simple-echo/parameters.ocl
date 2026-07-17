@@ -7,3 +7,11 @@ parameter "Team Name" {
 
     value "OctoBarc" {}
 }
+
+parameter "Worker Pool" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = ""
+}
