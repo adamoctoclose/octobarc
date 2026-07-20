@@ -1,4 +1,4 @@
-variable "Template Version" {
+variable "TemplateVersion" {
     value "1.0.0-DEV" {
         action = ["echo-values"]
         environment_parameter = ["Environment"]
