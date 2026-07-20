@@ -16,7 +16,7 @@ step "echo-values" {
                 team_name=$(get_octopusvariable "Team Name")
                 
                 # Read baked-in variable (fixed by template author, cannot be changed by users)
-                template_version=$(get_octopusvariable "Template Version")
+                template_version=$(get_octopusvariable "TemplateVersion")
                 
                 echo "============================================================"
                 echo "  SIMPLE ECHO - PROJECT TEMPLATE DEMO"
