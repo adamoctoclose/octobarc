@@ -2,10 +2,10 @@ parameter "Team Name" {
     display_settings = {
         Octopus.ControlType = "SingleLineText"
     }
-    help_text = "This value is baked into the template and cannot be changed by template users."
+    help_text = "This value can be set by users of the project template."
     label = "The team that owns this project."
 
-    value "OctoBarc" {}
+    value "Octobarc" {}
 }
 
 parameter "Worker Pool" {
@@ -27,14 +27,6 @@ parameter "Environment" {
 parameter "Target Tag" {
     display_settings = {
         Octopus.ControlType = "TargetTags"
-    }
-    help_text = ""
-    label = ""
-}
-
-parameter "Tenant Tag" {
-    display_settings = {
-        Octopus.ControlType = "TenantTags"
     }
     help_text = ""
     label = ""
