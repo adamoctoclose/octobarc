@@ -3,6 +3,7 @@ step "echo-values" {
 
     action {
         action_type = "Octopus.Script"
+        environments_variables = ["#{Environment}"]
         properties = {
             Octopus.Action.AutoRetry.MaximumCount = "3"
             Octopus.Action.AutoRetry.MinimumBackoff = "5"
