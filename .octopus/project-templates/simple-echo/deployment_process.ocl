@@ -12,23 +12,27 @@ step "echo-values" {
             Octopus.Action.Script.ScriptBody = <<-EOT
                 set -e
                 
-                team_name=$(get_octopusvariable "ProjectTemplate.Parameter.TeamName")
-                greeting=$(get_octopusvariable "GreetingMessage")
+                # Read user-supplied parameter (set when creating a project from this template)
+                team_name=$(get_octopusvariable "Team Name")
+                
+                # Read baked-in variable (fixed by template author, cannot be changed by users)
+                template_version=$(get_octopusvariable "Template Version")
                 
                 echo "============================================================"
                 echo "  SIMPLE ECHO - PROJECT TEMPLATE DEMO"
                 echo "============================================================"
                 echo ""
-                echo "  Baked-in Project Template Parameter (fixed by template author):"
-                echo "    Team Name: $team_name"
+                echo "  User Parameter (supplied when creating a project):"
+                echo "    Team Name:        $team_name"
                 echo ""
-                echo "  User Variable (provided at runtime):"
-                echo "    Greeting:  $greeting"
+                echo "  Baked-in Variable (fixed by template author):"
+                echo "    Template Version: $template_version"
                 echo ""
                 echo "============================================================"
                 echo ""
-                echo "  This demonstrates that project templates can contain both"
-                echo "  fixed values and user-configurable inputs."
+                echo "  This demonstrates that project templates can contain:"
+                echo "    - Parameters: user-configurable inputs"
+                echo "    - Variables:  fixed values that cannot be changed"
                 echo ""
                 echo "============================================================"
                 EOT
