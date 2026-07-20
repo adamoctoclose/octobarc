@@ -1,12 +1,20 @@
-variable "test" {
-    value "test" {
+variable "Template Version" {
+    value "1.0.0-DEV" {
         action = ["echo-values"]
         environment_parameter = ["Environment"]
         target_tag_parameter = ["Target Tag"]
-        tenant_tag_parameter = ["Tenant Tag"]
     }
-}
 
-variable "test2" {
-    value "test2" {}
+    value "1.0.0-PROD" {
+        action = ["echo-values"]
+        environment_parameter = ["Environment"]
+        target_tag_parameter = ["Target Tag"]
+    }
+
+    value "1.0.0-STG" {
+        action = ["echo-values"]
+        description = ""
+        environment_parameter = ["Environment"]
+        target_tag_parameter = ["Target Tag"]
+    }
 }
