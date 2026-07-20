@@ -1,3 +1,12 @@
 variable "test" {
-    value "test" {}
+    value "test" {
+        action = ["echo-values"]
+        environment_parameter = ["Environment"]
+        target_tag_parameter = ["Target Tag"]
+        tenant_tag_parameter = ["Tenant Tag"]
+    }
+}
+
+variable "test2" {
+    value "test2" {}
 }
