@@ -1,20 +1,18 @@
 variable "TemplateVersion" {
     value "1.0.0-DEV" {
         action = ["echo-values"]
-        environment_parameter = ["Environment"]
+        environment_parameter = ["Dev"]
         target_tag_parameter = ["Target Tag"]
     }
 
     value "1.0.0-PROD" {
         action = ["echo-values"]
-        environment_parameter = ["Environment"]
         target_tag_parameter = ["Target Tag"]
     }
 
     value "1.0.0-STG" {
         action = ["echo-values"]
         description = ""
-        environment_parameter = ["Environment"]
         target_tag_parameter = ["Target Tag"]
     }
 }
