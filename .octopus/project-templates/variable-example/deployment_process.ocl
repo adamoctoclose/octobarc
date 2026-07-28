@@ -6,9 +6,8 @@ step "print-octopus-environment" {
         properties = {
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptBody = <<-EOT
-                $environment = #{Octopus.Environment.Name}
-                
-                write-highligt "This is the $environment"
+                $environment = $OctopusParameters["Octopus.Environment.Name"]
+                Write-Highlight "This is the $environment"
                 EOT
             Octopus.Action.Script.ScriptSource = "Inline"
             Octopus.Action.Script.Syntax = "PowerShell"
