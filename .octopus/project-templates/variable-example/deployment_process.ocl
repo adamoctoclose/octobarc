@@ -1,0 +1,18 @@
+step "print-octopus-environment" {
+    name = "Print Octopus Environment"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                $environment = #{Octopus.Environment.Name}
+                
+                write-highligt "This is the $environment"
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = ""
+    }
+}
