@@ -1,2 +1,44 @@
 name = "Testing Template"
 description = ""
+
+parameter "Worker Pool" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = ""
+}
+
+step "say-hello" {
+    name = "Say Hello"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = "echo \"Hello\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "PowerShell"
+        }
+        worker_pool_variable = "#{Worker Pool}"
+    }
+}
+
+step "say-hello-again" {
+    condition = "Variable"
+    name = "Say Hello again"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "#{Octopus.Account.Name}=test"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = "echo \"Hello\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+        worker_pool_variable = "#{Worker Pool}"
+    }
+}
