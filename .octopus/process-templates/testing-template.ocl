@@ -59,3 +59,22 @@ step "manual-intervention-required" {
         }
     }
 }
+
+step "say-hello-again-again" {
+    condition = "Variable"
+    name = "Say hello again again!"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "Octopus.Action[Manual Intervention Required].Output.Manual.Approved=True"
+    }
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = "echo \"Say hello again again!\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+        worker_pool_variable = "#{Worker Pool}"
+    }
+}
