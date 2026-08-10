@@ -28,11 +28,7 @@ step "say-hello" {
 }
 
 step "say-hello-again-again" {
-    condition = "Variable"
     name = "Say hello again again!"
-    properties = {
-        Octopus.Step.ConditionVariableExpression = "Octopus.Action[Manual Intervention Required].Output.Manual.Approved=True"
-    }
 
     action "manual-intervention-required" {
         action_type = "Octopus.Manual"
