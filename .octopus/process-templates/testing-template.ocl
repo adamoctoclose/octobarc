@@ -42,3 +42,20 @@ step "say-hello-again" {
         worker_pool_variable = "#{Worker Pool}"
     }
 }
+
+step "manual-intervention-required" {
+    condition = "Variable"
+    name = "Manual Intervention Required"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "#{Octopus.Space.Name}=Default"
+    }
+
+    action {
+        action_type = "Octopus.Manual"
+        is_required = true
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Dry run completely successfully. Review the artifacted changeset logic before confirming deployment"
+        }
+    }
+}
