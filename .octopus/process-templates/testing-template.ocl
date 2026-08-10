@@ -28,15 +28,17 @@ step "say-hello" {
 }
 
 step "say-hello-again-again" {
+    condition = "Variable"
     name = "Say hello again again!"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "#{Octopus.Space.Name}=Default"
+    }
 
     action "manual-intervention-required" {
         action_type = "Octopus.Manual"
-        condition = "Variable"
         is_required = true
         name = "Manual Intervention Required"
         properties = {
-            Octopus.Action.ConditionVariableExpression = "#{Octopus.Space.Name}=Default"
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Dry run completely successfully. Review the artifacted changeset logic before confirming deployment"
         }
@@ -44,8 +46,10 @@ step "say-hello-again-again" {
 
     action "say-hello-again-again" {
         action_type = "Octopus.Script"
+        condition = "Variable"
         name = "Say hello again again!"
         properties = {
+            Octopus.Action.ConditionVariableExpression = "Octopus.Action[Manual Intervention Required].Output.Manual.Approved=True"
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptBody = "echo \"Say hello again again!\""
             Octopus.Action.Script.ScriptSource = "Inline"
