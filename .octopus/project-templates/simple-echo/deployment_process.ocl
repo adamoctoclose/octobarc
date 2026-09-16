@@ -40,5 +40,10 @@ step "echo-values" {
             Octopus.Action.Script.Syntax = "Bash"
         }
         worker_pool_variable = "#{Worker Pool}"
+
+        container {
+            feed = "#{test container registry}"
+            image = "liquibase:4.33"
+        }
     }
 }
