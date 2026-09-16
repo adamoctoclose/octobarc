@@ -31,3 +31,11 @@ parameter "Target Tag" {
     help_text = ""
     label = ""
 }
+
+parameter "test container registry" {
+    display_settings = {
+        Octopus.ControlType = "Feed"
+    }
+    help_text = "help text"
+    label = "feed label"
+}
