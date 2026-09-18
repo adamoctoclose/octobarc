@@ -68,7 +68,7 @@ step "plan-to-apply-a-terraform-template" {
             Octopus.Action.GoogleCloud.UseVMServiceAccount = "True"
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptSource = "GitRepository"
-            Octopus.Action.Terraform.AdditionalActionParams = "#{parameter.terraform.custom.params}"
+            Octopus.Action.Terraform.AdditionalActionParams = "-var=\"octopus_address=#{parameter.octopus.url}\" -var=\"octopus_api_key=#{parameter.octopus.api.key}\" #{parameter.terraform.custom.params} "
             Octopus.Action.Terraform.AllowPluginDownloads = "True"
             Octopus.Action.Terraform.AzureAccount = "False"
             Octopus.Action.Terraform.GoogleCloudAccount = "False"
