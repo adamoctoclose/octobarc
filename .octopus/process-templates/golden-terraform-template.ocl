@@ -57,6 +57,55 @@ parameter "parameter.octopus.api.key" {
     label = "Octopus Deploy API Key"
 }
 
+step "plan-to-apply-a-terraform-template" {
+    name = "Plan to apply a Terraform template"
+
+    action {
+        action_type = "Octopus.TerraformPlan"
+        properties = {
+            Octopus.Action.GitRepository.Source = "External"
+            Octopus.Action.GoogleCloud.ImpersonateServiceAccount = "False"
+            Octopus.Action.GoogleCloud.UseVMServiceAccount = "True"
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
+            Octopus.Action.Terraform.AdditionalActionParams = "#{parameter.terraform.custom.params}"
+            Octopus.Action.Terraform.AllowPluginDownloads = "True"
+            Octopus.Action.Terraform.AzureAccount = "False"
+            Octopus.Action.Terraform.GoogleCloudAccount = "False"
+            Octopus.Action.Terraform.ManagedAccount = "None"
+            Octopus.Action.Terraform.PlanJsonOutput = "False"
+            Octopus.Action.Terraform.RunAutomaticFileSubstitution = "False"
+            Octopus.Action.Terraform.TemplateDirectory = "#{parameter.terraform.template.directory}"
+        }
+        worker_pool_variable = "#{parameter.worker.pool}"
+
+        container {
+            feed = "#{parameter.external.feed}"
+            image = "octopusdeploy/worker-tools:6.6.5-ubuntu.24.04"
+        }
+
+        git_dependencies {
+            default_branch = "main"
+            git_credential_id = "GitCredentials-1"
+            git_credential_type = "Library"
+            repository_uri = "#{parameter.terraform.git.url}"
+        }
+    }
+}
+
+step "manual-intervention-required" {
+    name = "Manual Intervention Required"
+
+    action {
+        action_type = "Octopus.Manual"
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Please review the Terraform Plan "
+            Octopus.Action.Manual.ResponsibleTeamIds = "global/everyone"
+        }
+    }
+}
+
 step "apply-a-terraform-template" {
     name = "Apply a Terraform template"
 
