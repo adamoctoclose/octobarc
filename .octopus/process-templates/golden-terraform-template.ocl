@@ -130,7 +130,7 @@ step "manual-intervention-required" {
                 Please review the Terraform Plan:
                 
                 ```
-                #{Octopus.Action[Plan Apply].Output.TerraformPlanOutput}
+                #{Octopus.Action[Plan to apply a Terraform template].Output.TerraformPlanOutput}
                 ```
                 EOT
             Octopus.Action.Manual.ResponsibleTeamIds = "global/everyone"
