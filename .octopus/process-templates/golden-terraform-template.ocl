@@ -87,7 +87,7 @@ step "apply-a-terraform-template" {
 
         git_dependencies {
             default_branch = "main"
-            git_credential_id = "GitCredentialIds-1"
+            git_credential_id = "GitCredentials-1"
             git_credential_type = "Library"
             repository_uri = "#{parameter.terraform.git.url}"
         }
