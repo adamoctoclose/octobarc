@@ -101,7 +101,7 @@ step "write-terraform-plan-preview" {
         properties = {
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptBody = <<-EOT
-                $plan = #Octopus.Action[Plan to apply a Terraform template].Output.TerraformPlanOutput
+                $plan = #{Octopus.Action[Plan to apply a Terraform template].Output.TerraformPlanOutput}
                 
                 Write-Highlight $plan
                 
