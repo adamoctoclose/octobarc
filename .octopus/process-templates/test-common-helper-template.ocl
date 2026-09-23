@@ -1,2 +1,32 @@
 name = "Test Common Helper Template"
 description = ""
+
+parameter "worker-pool-name" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = ""
+}
+
+step "run-a-script" {
+    name = "Run a Script"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.GitRepository.Source = "External"
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptFileName = "Script.sh"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
+        }
+        worker_pool_variable = "#{worker-pool-name}"
+
+        git_dependencies {
+            default_branch = "#{Octopus.Action.GitResource.CommitHash}"
+            git_credential_id = "GitCredentials-1"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/adamoctoclose/octobarc.git"
+        }
+    }
+}
