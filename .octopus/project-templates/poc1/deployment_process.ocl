@@ -5,10 +5,20 @@ step "run-a-script" {
         action_type = "Octopus.Script"
         properties = {
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Script.ScriptBody = "echo \"hell\""
+            Octopus.Action.Script.ScriptBody = "echo \"hello\""
             Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "PowerShell"
+            Octopus.Action.Script.Syntax = "Bash"
         }
         worker_pool_variable = "#{templaye.workerpool}"
+    }
+}
+
+process_template "run-a-process-template" {
+    name = "Run a Process Template"
+    process_template_slug = "testing-template"
+    version_mask = "PreRelease"
+
+    parameter "Worker Pool" {
+        value = "#{templaye.workerpool}"
     }
 }
