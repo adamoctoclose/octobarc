@@ -1,2 +1,28 @@
 name = "Test http code"
 description = "Test how to properly test code"
+
+parameter "template.worker.pool" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = ""
+}
+
+step "test-http-code" {
+    name = "Test http code"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                  code=$(curl -sk -o /dev/null -w '%{http_code}' https://octobarc.octopus.app)
+                  echo "HTTP code: $code"
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+        worker_pool_variable = "#{template.worker.pool}"
+    }
+}
