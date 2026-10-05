@@ -16,7 +16,9 @@ parameter "template.oicd.account" {
     help_text = ""
     label = "OICD Account"
 
-    value "adams-oicd-account" {}
+    value "adams-oicd-account" {
+        environment = ["Spaces-1/development"]
+    }
 }
 
 step "generate-jwt-token" {
