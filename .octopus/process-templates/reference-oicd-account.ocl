@@ -1,2 +1,20 @@
 name = "Reference OICD Account"
 description = ""
+
+parameter "template.worker.pool" {
+    display_settings = {
+        Octopus.ControlType = "WorkerPool"
+    }
+    help_text = ""
+    label = "Worker Pool"
+}
+
+parameter "template.oicd.account" {
+    display_settings = {
+        Octopus.ControlType = "GenericOidcAccount"
+    }
+    help_text = ""
+    label = "OICD Account"
+
+    value "adams-oicd-account" {}
+}
