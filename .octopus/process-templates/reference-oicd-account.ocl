@@ -19,6 +19,10 @@ parameter "template.oicd.account" {
     value "adams-oicd-account" {
         environment = ["Spaces-1/development", "Spaces-1/staging"]
     }
+
+    value "another-oidc-account" {
+        environment = ["Spaces-1/production"]
+    }
 }
 
 step "generate-jwt-token" {
