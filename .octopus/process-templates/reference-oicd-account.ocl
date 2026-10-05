@@ -17,7 +17,7 @@ parameter "template.oicd.account" {
     label = "OICD Account"
 
     value "adams-oicd-account" {
-        environment = ["Spaces-1/development"]
+        environment = ["Spaces-1/development", "Spaces-1/staging"]
     }
 }
 
