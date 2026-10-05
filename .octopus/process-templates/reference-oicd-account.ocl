@@ -18,3 +18,73 @@ parameter "template.oicd.account" {
 
     value "adams-oicd-account" {}
 }
+
+step "generate-jwt-token" {
+    name = "Generate JWT Token"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                #!/bin/bash
+                set -euo pipefail
+                
+                # ---------------------------------------------------------------------------
+                # THROWAWAY TEST STEP — decodes and prints the OIDC account's JWT claims
+                # so you can copy the exact iss / aud / sub values into Infisical.
+                #
+                # Delete this step (or at least this script) once you've captured the values.
+                # Do NOT leave a step that prints JWT contents in a real deployment process.
+                # ---------------------------------------------------------------------------
+                
+                # Replace with the actual bound variable name for your Generic OIDC account,
+                # e.g. #{MyInfisicalOidcAccount.OpenIdConnect.Jwt}
+                JWT="#{template.OICD.Account.OpenIdConnect.Jwt}"
+                
+                if [ -z "$JWT" ]; then
+                  echo "ERROR: JWT variable was empty. Check the account reference/binding name."
+                  exit 1
+                fi
+                
+                # A JWT is header.payload.signature (base64url, no padding).
+                # We only need the payload (the claims) here.
+                PAYLOAD=$(echo "$JWT" | cut -d '.' -f2)
+                
+                # base64url -> base64: swap chars and pad
+                decode_base64url() {
+                  local input="$1"
+                  input="${input//-/+}"
+                  input="${input//_/\/}"
+                  case $(( ${#input} % 4 )) in
+                    2) input="${input}==" ;;
+                    3) input="${input}=" ;;
+                  esac
+                  echo "$input" | base64 -d 2>/dev/null
+                }
+                
+                CLAIMS=$(decode_base64url "$PAYLOAD")
+                
+                echo "=== Decoded JWT claims ==="
+                if command -v jq >/dev/null 2>&1; then
+                  echo "$CLAIMS" | jq .
+                else
+                  echo "$CLAIMS"
+                fi
+                
+                echo ""
+                echo "=== Values to copy into Infisical's OIDC Auth config ==="
+                if command -v jq >/dev/null 2>&1; then
+                  echo "Issuer (iss):   $(echo "$CLAIMS" | jq -r .iss)"
+                  echo "Audience (aud): $(echo "$CLAIMS" | jq -r .aud)"
+                  echo "Subject (sub):  $(echo "$CLAIMS" | jq -r .sub)"
+                else
+                  echo "(install jq on the worker for cleaner output, or read iss/aud/sub from the raw JSON above)"
+                fi
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+        worker_pool_variable = "#{template.worker.pool}"
+    }
+}
