@@ -16,13 +16,9 @@ parameter "template.oicd.account" {
     help_text = ""
     label = "OICD Account"
 
-    value "adams-oicd-account" {
-        environment = ["Spaces-1/development", "Spaces-1/staging"]
-    }
+    value "adams-oicd-account" {}
 
-    value "another-oidc-account" {
-        environment = ["Spaces-1/production"]
-    }
+    value "another-oidc-account" {}
 }
 
 step "generate-jwt-token" {
@@ -43,6 +39,9 @@ step "generate-jwt-token" {
                 # Delete this step (or at least this script) once you've captured the values.
                 # Do NOT leave a step that prints JWT contents in a real deployment process.
                 # ---------------------------------------------------------------------------
+                
+                account=$(get_octopusvariable "template.oicd.account")
+                echo "$account"
                 
                 # Replace with the actual bound variable name for your Generic OIDC account,
                 # e.g. #{MyInfisicalOidcAccount.OpenIdConnect.Jwt}
