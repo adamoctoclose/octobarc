@@ -1,0 +1,5 @@
+variable "hello" {
+    type = "GenericOidcAccount"
+
+    value "adams-oicd-account" {}
+}
