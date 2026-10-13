@@ -81,7 +81,7 @@ step "plan-to-apply-a-terraform-template" {
 
         container {
             feed = "#{parameter.external.feed}"
-            image = "octopusdeploy/worker-tools:6.6.5-ubuntu.24.04"
+            image = "adamoctoclose/octopus-terraform-execution-container"
         }
 
         git_dependencies {
@@ -163,7 +163,7 @@ step "apply-a-terraform-template" {
 
         container {
             feed = "#{parameter.external.feed}"
-            image = "octopusdeploy/worker-tools:6.6.5-ubuntu.24.04"
+            image = "adamoctoclose/octopus-terraform-execution-container"
         }
 
         git_dependencies {
