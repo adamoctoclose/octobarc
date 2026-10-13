@@ -2,7 +2,7 @@
 ## Library variable sets
 ##
 ## `octopusdeploy_variable` attaches a variable to an owner. For a library
-## variable set the owner is the set's own ID, which also makes OpenTofu order
+## variable set the owner is the set's own ID, which also makes Terraform order
 ## the set before its variables.
 ##
 
@@ -68,7 +68,7 @@ resource "octopusdeploy_variable" "log_level" {
 }
 
 # Sensitive: `value` is left unset and `sensitive_value` is used instead.
-# Octopus never returns the value once written, so OpenTofu cannot detect
+# Octopus never returns the value once written, so Terraform cannot detect
 # drift on it - changing `shared_api_key` is what triggers an update.
 resource "octopusdeploy_variable" "shared_api_key" {
   space_id = octopusdeploy_space.this.id

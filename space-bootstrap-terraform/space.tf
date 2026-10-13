@@ -1,6 +1,6 @@
 resource "octopusdeploy_space" "this" {
   name        = var.space_name
-  description = var.space_description != "" ? var.space_description : "Created by OpenTofu for ${var.space_name}."
+  description = var.space_description != "" ? var.space_description : "Created by Terraform for ${var.space_name}."
 
   # `slug` is optional+computed, so `null` means "let Octopus generate one"
   # rather than "set it to empty".

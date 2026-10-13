@@ -1,5 +1,5 @@
 terraform {
-  # OpenTofu 1.6 is the first release; 1.6+ gives us `optional()` object
+  # Terraform 1.6+ gives us `optional()` object
   # attributes, which the `environments` variable relies on.
   required_version = ">= 1.6.0"
 
@@ -19,14 +19,14 @@ terraform {
   # the runbook step).
   #
   # backend "s3" {
-  #   bucket = "my-tofu-state"
+  #   bucket = "my-terraform-state"
   #   key    = "octopus/space-bootstrap.tfstate"
   #   region = "us-east-1"
   # }
   #
   # backend "azurerm" {
   #   resource_group_name  = "my-rg"
-  #   storage_account_name = "mytofustate"
+  #   storage_account_name = "myterraformstate"
   #   container_name       = "tfstate"
   #   key                  = "octopus/space-bootstrap.tfstate"
   # }

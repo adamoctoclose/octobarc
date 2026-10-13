@@ -1,4 +1,4 @@
-# Space bootstrap (OpenTofu)
+# Space bootstrap (Terraform)
 
 Creates an Octopus Deploy space and its baseline configuration in a single
 apply. The space name is an input variable, so the whole thing can be driven
@@ -23,7 +23,7 @@ names above are chosen so they do not collide.
 
 | File | Purpose |
 | --- | --- |
-| [versions.tf](versions.tf) | OpenTofu and provider version constraints, backend placeholder |
+| [versions.tf](versions.tf) | Terraform and provider version constraints, backend placeholder |
 | [providers.tf](providers.tf) | Provider configuration |
 | [variables.tf](variables.tf) | Inputs, including `space_name` |
 | [space.tf](space.tf) | The space |
@@ -34,7 +34,7 @@ names above are chosen so they do not collide.
 
 ## Requirements
 
-- OpenTofu 1.6+ (or Terraform 1.6+ - the configuration is compatible with both)
+- Terraform 1.6+ (the configuration is also compatible with OpenTofu 1.6+)
 - `OctopusDeploy/octopusdeploy` provider `~> 1.19`
 - Octopus Server **2025.3 or newer**. Lifecycle retention uses the
   `release_retention_with_strategy` / `tentacle_retention_with_strategy`
@@ -49,9 +49,9 @@ names above are chosen so they do not collide.
 
 ```bash
 cp terraform.tfvars.example terraform.tfvars   # then edit it
-tofu init
-tofu plan
-tofu apply
+terraform init
+terraform plan
+terraform apply
 ```
 
 Or without a tfvars file:
@@ -61,8 +61,8 @@ export TF_VAR_octopus_address="https://my.octopus.app"
 export TF_VAR_octopus_api_key="API-XXXX"
 export TF_VAR_space_name="Example Space"
 
-tofu init
-tofu apply -auto-approve
+terraform init
+terraform apply -auto-approve
 ```
 
 ## Running it from an Octopus runbook
@@ -99,7 +99,7 @@ Every input maps to a `TF_VAR_` environment variable, so no template file or
 
 State is per-space here, so give each space its own state key - for example
 `octopus/spaces/#{SpaceName | ToLower}.tfstate` in the backend key, or use a
-separate workspace per space (`tofu workspace select -or-create "#{SpaceName}"`).
+separate workspace per space (`terraform workspace select -or-create "#{SpaceName}"`).
 Sharing one state file across spaces will cause the second run to delete the
 first space.
 
@@ -117,7 +117,7 @@ first space.
   exist when the provider is configured, so it cannot be targeted there. Every
   resource sets `space_id` explicitly instead.
 - **Sensitive variables cannot be read back.** Octopus never returns
-  `sensitive_value`, so OpenTofu cannot detect drift on `Shared.Api.Key`.
+  `sensitive_value`, so Terraform cannot detect drift on `Shared.Api.Key`.
   Changing the `shared_api_key` input is what triggers an update. Point it at
   your secret store rather than committing a value.
 - **Environment order is significant.** The list order in `environments` sets

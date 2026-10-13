@@ -1,0 +1,10 @@
+# Providers to bake into the image. Add more required_providers entries here
+# to mirror additional providers.
+terraform {
+  required_providers {
+    octopusdeploy = {
+      source  = "OctopusDeploy/octopusdeploy"
+      version = "__OCTOPUS_PROVIDER_VERSION__"
+    }
+  }
+}

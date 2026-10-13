@@ -1,0 +1,82 @@
+name: Build Terraform execution container
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - terraform-execution-container/**
+      - .github/workflows/build-terraform-execution-container.yml
+  pull_request:
+    paths:
+      - terraform-execution-container/**
+      - .github/workflows/build-terraform-execution-container.yml
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/octopus-terraform-execution-container
+  TERRAFORM_VERSION: "1.7.2"
+  OCTOPUS_PROVIDER_VERSION: "1.19.0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image (loaded locally for testing)
+        uses: docker/build-push-action@v6
+        with:
+          context: terraform-execution-container
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:test
+          build-args: |
+            TERRAFORM_VERSION=${{ env.TERRAFORM_VERSION }}
+            OCTOPUS_PROVIDER_VERSION=${{ env.OCTOPUS_PROVIDER_VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Verify terraform init works with no network
+        run: |
+          docker run --rm --network none \
+            -v "$PWD/terraform-execution-container/test:/work" -w /work \
+            ${{ env.IMAGE_NAME }}:test terraform init
+          docker run --rm --network none \
+            ${{ env.IMAGE_NAME }}:test terraform version
+
+      - name: Log in to registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker metadata
+        if: github.event_name != 'pull_request'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=tf-${{ env.TERRAFORM_VERSION }}-octopus-${{ env.OCTOPUS_PROVIDER_VERSION }}
+            type=raw,value=latest
+            type=sha
+
+      - name: Push image
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v6
+        with:
+          context: terraform-execution-container
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            TERRAFORM_VERSION=${{ env.TERRAFORM_VERSION }}
+            OCTOPUS_PROVIDER_VERSION=${{ env.OCTOPUS_PROVIDER_VERSION }}
+          cache-from: type=gha
